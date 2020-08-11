@@ -1,54 +1,26 @@
-import React,{useState} from 'react'
+import React from 'react'
+import {Provider} from 'react-redux'
 
+import Balance from './components/Balance.js'
+import AddTransaction from './components/AddTransaction.js'
+import Calculation from './components/Calculation.js'
 import Header from './components/Header.js'
-import Pending from './components/Pending.js'
-import Completed from './components/Completed.js'
+import Transaction from './components/Transaction.js'
+
+import store from './redux/Store.js'
 
 function App() {
-
-	const [pendingList,setpendingList] = useState([])
-	const [completedList,setcompletedList] = useState([])
-
-	const updatedList = (item) => {
-		setpendingList([...pendingList,item])
-	}
-
-	const removedList = (key) => {
-		const array = pendingList
-		setpendingList(array.filter( item => item !== key))
-	}
-
-	const deletedList = (key) => {
-		const array = completedList
-		setcompletedList(array.filter( item => item !== key))
-	}
-
-	const finishedList = (key) => {
-		const newList = pendingList
-		newList.map( item => 
-			{if( item == key)
-				setcompletedList([...completedList,item]) 
-			})
-		setpendingList(newList.filter( item => item !== key))
-	}
-
-	const workover = (key) => {
-		const addList = completedList
-		addList.map( item => 
-			{if( item == key)
-				setpendingList([...pendingList,item]) 
-			})
-		setcompletedList(addList.filter( item => item !== key))
-	}
-
 	return (
-		<div className='container'>
-			<Header func={updatedList} />
-			<Pending list={pendingList} func1={removedList} func2={finishedList} />
-			<Completed list={completedList} func1={deletedList} func2={workover} />
+		<Provider store={store}>
+		<div>
+			<Header />
+			<Balance />
+			<Calculation />
+			<AddTransaction />
+			<Transaction />
 		</div>
+		</Provider>
 	)
 }
 
 export default App
-
